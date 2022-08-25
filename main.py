@@ -1,4 +1,3 @@
-from importlib.resources import path
 from os import path, remove
 from sys import argv
 
@@ -10,14 +9,14 @@ def download_mp4(link: str):
     print('Downloading mp4 file...')
     yt = YouTube(link)
     yd = yt.streams.get_highest_resolution()
-    yd.download('./video/')
+    yd.download(output_path='./video/', filename=f"video - {yt.title}.mp4")
     print('Download Complete!!!')
 
 def download_mp3(link: str):
     print('Downloading mp3 file...')
-    audio_title = YouTube(link).title
+    audio_title = f"audio - {YouTube(link).title}"
     audio = YouTube(link).streams.filter(only_audio=True).order_by('abr').desc().first()
-    audio.download('./audio/')
+    audio.download(output_path='./audio/', filename=f"{audio_title}.webm")
     audio_path = path.join('./audio', f"{audio_title}.webm")
     print('Converting webm to mp3...')
     (
@@ -41,7 +40,7 @@ def download():
         elif file_format == 'mp4':
             return download_mp4(video_url)
         else:
-            return print('Bad file Format. Only Accept mp3 or mp4 formats!')
+            return print('Bad file Format. Only Accept mp3 or mp4!!!')
     
     download_mp4(video_url)
 
